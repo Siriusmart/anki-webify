@@ -1,0 +1,11 @@
+[package]
+name = "anki-webify"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+zip-extract = "0.2"
+serde_json = "1"
+serde = { version = "1", features = [ "derive" ]}
+rusqlite = "0.33"
+rand = "0.8"
