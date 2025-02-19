@@ -6,22 +6,16 @@ use std::{
     process,
 };
 
-use rand::{distributions::Alphanumeric, Rng};
 use rusqlite::Connection;
 use serde::Deserialize;
 
 fn main() {
-    let id = rand::thread_rng()
-        .sample_iter(&Alphanumeric)
-        .take(10)
-        .map(char::from)
-        .collect::<String>();
-
-    let path = env::args().nth(1).unwrap_or_else(|| {
-        println!("No file path specified: `anki-webify [input] (output) (media prepend)`");
+    if env::args().count() < 3 {
+        println!("No file path specified: `anki-webify [input] [name] (output) (media prepend)`");
         process::exit(-1);
-    });
+    }
 
+    let path = env::args().nth(1).unwrap();
     let path = PathBuf::from(path);
 
     if !path.exists() {
@@ -29,11 +23,12 @@ fn main() {
         process::exit(-2);
     }
 
-    let output = env::args().nth(2).unwrap_or_default();
+    let id = env::args().nth(2).unwrap();
+    let output = env::args().nth(3).unwrap_or_default();
     let output = PathBuf::from(output).join(&id);
     let temp = output.join("temp");
 
-    let media_prepend = env::args().nth(3).unwrap_or("./".to_string());
+    let media_prepend = env::args().nth(4).unwrap_or("./".to_string());
 
     if temp.exists() {
         fs::remove_dir_all(&temp).unwrap();

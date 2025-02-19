@@ -23,7 +23,6 @@ dependencies = [
 name = "anki-webify"
 version = "0.1.0"
 dependencies = [
- "rand",
  "rusqlite",
  "serde",
  "serde_json",
